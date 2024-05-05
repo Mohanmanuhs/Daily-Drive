@@ -24,7 +24,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,6 +33,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -41,9 +41,9 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.core.text.isDigitsOnly
 import com.example.goalstracker.R
+import com.example.goalstracker.presentation.components.TextDesign
 
 @Composable
 fun SignUpScreen() {
@@ -52,24 +52,25 @@ fun SignUpScreen() {
         modifier = Modifier.fillMaxWidth()
     ) {
         Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-            Image(painter = painterResource(id = R.drawable.group_28), contentDescription = "")
+            Image(painter = painterResource(id = R.drawable.group_28), contentScale = ContentScale.Crop, contentDescription = "")
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(
-                    text = "Welcome !",
-                    fontSize = 40.sp,
-                    fontWeight = FontWeight.SemiBold,
+                TextDesign(
+                    txt = "Welcome !",
+                    fs=40,
+                    fw = FontWeight.SemiBold,
                     color = Color.White
                 )
-                Text(
-                    text = "to",
-                    fontSize = 40.sp,
-                    fontWeight = FontWeight.SemiBold,
+                TextDesign(
+                    txt = "to",
+                    fs=40,
+                    fw = FontWeight.SemiBold,
                     color = Color.White
                 )
-                Text(
-                    text = "Daily-Drive",
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 40.sp,
+
+                TextDesign(
+                    txt = "Daily-Drive",
+                    fs=40,
+                    fw = FontWeight.SemiBold,
                     color = Color.White
                 )
             }
@@ -91,10 +92,11 @@ fun SignUpScreen() {
                     .padding(bottom = 20.dp),
                 onValueChange = { text = it }, shape = RoundedCornerShape(15.dp),
                 placeholder = {
-                    Text(
+
+                    TextDesign(
+                        txt = "Enter your name",
                         modifier = Modifier.padding(start = 5.dp),
-                        text = "Enter your name",
-                        fontWeight = FontWeight.Light,
+                        fw = FontWeight.Light,
                         color = Color(0xFF929292)
                     )
                 },
@@ -138,10 +140,10 @@ fun SignUpScreen() {
                 onValueChange = { if (it.isDigitsOnly()) pass = it },
                 shape = RoundedCornerShape(15.dp),
                 placeholder = {
-                    Text(
+                    TextDesign(
+                        txt = "Enter 4 digit password",
                         modifier = Modifier.padding(start = 5.dp),
-                        text = "Enter 4 digit password",
-                        fontWeight = FontWeight.Light,
+                        fw = FontWeight.Light,
                         color = Color(0xFF929292)
                     )
                 },
@@ -170,12 +172,16 @@ fun SignUpScreen() {
                         disabledIndeterminateColor = Color.LightGray
                     )
                 )
-                Text(text = "I agree for ", fontWeight = FontWeight.Medium, fontSize = 15.sp)
-                Text(
-                    text = "terms and conditions.",
-                    color = Color.Red,
-                    fontWeight = FontWeight.Medium,
-                    fontSize = 15.sp
+                TextDesign(
+                    txt = "I agree for ",
+                    fs = 15,
+                    fw = FontWeight.Medium,
+                )
+                TextDesign(
+                    txt = "terms and conditions.",
+                    fs = 15,
+                    fw = FontWeight.Medium,
+                    color = Color.Red
                 )
 
             }
@@ -195,7 +201,12 @@ fun SignUpScreen() {
                     disabledContentColor = MaterialTheme.colorScheme.onSecondaryContainer
                 )
             ) {
-                Text("Let's Go!", fontWeight = FontWeight.Bold, fontSize = 20.sp)
+                TextDesign(
+                    txt = "Let's Go!",
+                    fs = 20,
+                    fw = FontWeight.Bold,
+                    color = Color.White
+                )
             }
 
         }
