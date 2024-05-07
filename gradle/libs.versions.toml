@@ -1,6 +1,7 @@
 [versions]
 hiltAndroidCompiler = "2.51"
 hiltCompiler = "1.2.0"
+navigationCompose = "2.7.7"
 workRuntimeKtx = "2.9.0"
 agp = "8.3.2"
 kotlin = "1.9.22"
@@ -16,6 +17,7 @@ materialIconsExtended = "1.6.7"
 [libraries]
 androidx-hilt-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "hiltCompiler" }
 androidx-hilt-work = { module = "androidx.hilt:hilt-work", version.ref = "hiltCompiler" }
+androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "workRuntimeKtx" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroidCompiler" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroidCompiler" }
