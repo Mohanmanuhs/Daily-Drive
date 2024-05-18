@@ -5,6 +5,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 data class NavBarItem(
     val title: String,
     val image: ImageVector,
-    val route: String
+    val route:NavRoutes
 )
 

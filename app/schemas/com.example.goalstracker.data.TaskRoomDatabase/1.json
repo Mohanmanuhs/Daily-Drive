@@ -1,0 +1,70 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "c48dfd2c12998508a4ca53e18c895faf",
+    "entities": [
+      {
+        "tableName": "task_list",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`TaskPosition` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `PinnedTask` INTEGER NOT NULL, `TaskName` TEXT NOT NULL, `TaskCompletion` INTEGER NOT NULL, `Alarm` INTEGER NOT NULL, `AlarmHour` INTEGER NOT NULL, `AlarmMinute` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "pos",
+            "columnName": "TaskPosition",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "pTask",
+            "columnName": "PinnedTask",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tName",
+            "columnName": "TaskName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tc",
+            "columnName": "TaskCompletion",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "a",
+            "columnName": "Alarm",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "aHour",
+            "columnName": "AlarmHour",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "aMinute",
+            "columnName": "AlarmMinute",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "TaskPosition"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c48dfd2c12998508a4ca53e18c895faf')"
+    ]
+  }
+}

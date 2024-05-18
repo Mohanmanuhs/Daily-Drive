@@ -1,4 +1,4 @@
-package com.example.goalstracker.presentation
+package com.example.goalstracker.presentation.sign_up
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box

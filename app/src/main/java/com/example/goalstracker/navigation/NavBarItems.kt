@@ -11,22 +11,22 @@ object NavBarItems {
         NavBarItem(
             title = "Home",
             image = Icons.Filled.Home,
-            route = "home_screen"
+            route = NavRoutes.Home
         ),
         NavBarItem(
             title = "Add",
             image = Icons.Filled.Add,
-            route = "add_task_screen"
+            route = NavRoutes.AddTask
         ),
         NavBarItem(
             title = "Alarms",
             image = Icons.Filled.AlarmOn,
-            route = "alarm_screen"
+            route = NavRoutes.Alarm
         ),
         NavBarItem(
             title = "Profile",
             image = Icons.Filled.Person,
-            route = "profile_screen"
+            route = NavRoutes.Profile
         )
     )
 

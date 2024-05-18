@@ -1,4 +1,4 @@
-package com.example.goalstracker.presentation
+package com.example.goalstracker.presentation.add_task
 
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -55,9 +55,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.goalstracker.AndroidNotificationScheduler
 import com.example.goalstracker.R
 import com.example.goalstracker.data.Notification
+import com.example.goalstracker.data.Task
 import com.example.goalstracker.presentation.components.TextDesign
 import com.example.goalstracker.ui.theme.GoalsTrackerTheme
 import java.time.LocalTime
@@ -65,7 +67,7 @@ import java.time.LocalTime
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddTaskScreen() {
+fun AddTaskScreen(addTaskViewModel: AddTaskViewModel= hiltViewModel()) {
     var openDialog by remember { mutableStateOf(false) }
     val context = LocalContext.current
     if (openDialog) {
@@ -218,7 +220,7 @@ fun AddTaskScreen() {
                 onClick = {
                     if (!isGranted)
                         openDialog=true
-                    else{
+                    else if (showTimePicker){
                         if (state.hour < localTime.hour) {
                             Toast.makeText(
                                 context, "Please select time greater than present time",
@@ -238,6 +240,14 @@ fun AddTaskScreen() {
                                 min = state.minute.toLong() - localTime.minute.toLong()
                             )
                         }
+                        addTaskViewModel.addTask(Task(
+                            tName=text,a=true,aHour=state.hour,aMinute=state.minute
+                        ))
+
+                    }else{
+                        addTaskViewModel.addTask(Task(
+                            tName = text
+                        ))
                     }
                 },
                 modifier = Modifier

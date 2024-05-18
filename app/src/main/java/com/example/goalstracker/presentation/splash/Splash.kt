@@ -1,4 +1,4 @@
-package com.example.goalstracker.presentation
+package com.example.goalstracker.presentation.splash
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -11,8 +11,8 @@ import kotlinx.coroutines.delay
 fun SplashScreen(navController: NavHostController) {
     Text(text = "hai")
     LaunchedEffect(key1 = true) {
-        delay(2000)
-        navController.navigate(NavRoutes.Scafold.route)
+        delay(0)
+        navController.navigate(NavRoutes.Scafold)
     }
 
 }
