@@ -4,39 +4,54 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class TaskRepository(private val taskDao: TaskDao){
+class TaskRepository(private val taskDao: TaskDao) {
     val allTaskByAsc = taskDao.getAllTaskByAscOrder()
-    private val coroutineScope= CoroutineScope(Dispatchers.Main)
+    private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
-    fun addTask(task: Task){
+    fun addTask(task: Task) {
         coroutineScope.launch(Dispatchers.IO) {
             taskDao.addTask(task)
         }
     }
-
-    fun deleteTask(taskPosition:Int){
+    fun deleteTask(taskPosition: Int) {
         coroutineScope.launch(Dispatchers.IO) {
             taskDao.deleteTask(taskPosition)
         }
     }
-    fun deleteAllTask(){
+
+    fun deleteAllTask() {
         coroutineScope.launch(Dispatchers.IO) {
             taskDao.deleteAllTask()
         }
     }
-    fun pinTask(tName:String){
+
+    fun pinTask(pos: Int) {
         coroutineScope.launch(Dispatchers.IO) {
-            taskDao.pinTask(tName)
+            taskDao.pinTask(pos)
         }
     }
-    fun taskCompleted(tName:String){
+
+    fun unPinTask(pos: Int) {
         coroutineScope.launch(Dispatchers.IO) {
-            taskDao.taskCompleted(tName)
+            taskDao.unPinTask(pos)
         }
     }
-    fun taskNotCompleted(tName:String){
+
+    fun offAlarm(tName: String) {
         coroutineScope.launch(Dispatchers.IO) {
-            taskDao.taskNotCompleted(tName)
+            taskDao.offAlarm(tName)
+        }
+    }
+
+    fun taskCompleted(pos: Int) {
+        coroutineScope.launch(Dispatchers.IO) {
+            taskDao.taskCompleted(pos)
+        }
+    }
+
+    fun taskNotCompleted(pos: Int) {
+        coroutineScope.launch(Dispatchers.IO) {
+            taskDao.taskNotCompleted(pos)
         }
     }
 

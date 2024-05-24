@@ -28,14 +28,18 @@ class Task{
     @ColumnInfo(name = "AlarmMinute")
     var aMinute:Int=0
 
+    @ColumnInfo(name = "Am")
+    var aAm: Int = 0
+
     constructor()
     constructor(tName:String){
         this.tName=tName
     }
-    constructor(tName: String,a:Boolean,aHour:Int,aMinute:Int){
+    constructor(tName: String,a:Boolean,aHour:Int,aMinute:Int,aAm:Int){
         this.tName=tName
         this.a=a
         this.aHour=aHour
         this.aMinute=aMinute
+        this.aAm=aAm
     }
 }

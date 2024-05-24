@@ -19,7 +19,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.goalstracker.navigation.NavBarItems
 import com.example.goalstracker.navigation.NavRoutes
 import com.example.goalstracker.presentation.add_task.AddTaskScreen
-import com.example.goalstracker.presentation.alarm_list.AlarmListScreen
+import com.example.goalstracker.presentation.alarm_list.NotifyList
 import com.example.goalstracker.presentation.home.HomeScreen
 import com.example.goalstracker.presentation.profile.ProfileScreen
 
@@ -73,7 +73,7 @@ fun Scaffold() {
             }
             composable<NavRoutes.Alarm>
             {
-                AlarmListScreen()
+                NotifyList()
             }
             composable<NavRoutes.AddTask>
             {

@@ -29,14 +29,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.goalstracker.R
-import com.example.goalstracker.ui.theme.GoalsTrackerTheme
 
 @Composable
 fun Graph(map: List<Pair<String, Float>>, ht: Int) {
-
     Card(
         modifier = Modifier
             .padding(5.dp)
@@ -85,7 +82,7 @@ fun Graph(map: List<Pair<String, Float>>, ht: Int) {
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         var animationTriggered by remember {
-                            mutableStateOf(true)
+                            mutableStateOf(false)
                         }
                         val graphHeight by animateFloatAsState(
                             targetValue = if (animationTriggered) it.second else 0f,
@@ -151,22 +148,4 @@ fun Graph(map: List<Pair<String, Float>>, ht: Int) {
         }
     }
 
-}
-
-@Preview(showSystemUi = true)
-@Composable
-private fun Gf() {
-    GoalsTrackerTheme {
-        Graph(
-            map = listOf(
-                "M" to 1f,
-                "T" to .2f,
-                "W" to .8f,
-                "T" to .3f,
-                "F" to .9f,
-                "S" to .5f,
-                "S" to .9f
-            ), ht = 150
-        )
-    }
 }

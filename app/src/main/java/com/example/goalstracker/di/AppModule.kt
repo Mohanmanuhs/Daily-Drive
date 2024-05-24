@@ -4,6 +4,8 @@ import android.content.Context
 import com.example.goalstracker.AppNotificationManager
 import com.example.goalstracker.data.TaskDao
 import com.example.goalstracker.data.TaskRepository
+import com.example.goalstracker.data.WeeklyDao
+import com.example.goalstracker.data.WeeklyRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,6 +23,11 @@ object AppModule {
         return TaskRepository(taskDao)
     }
 
+    @Provides
+    @Singleton
+    fun provideWeeklyRepository(weeklyDao: WeeklyDao): WeeklyRepository {
+        return WeeklyRepository(weeklyDao)
+    }
 
     @Provides
     @Singleton

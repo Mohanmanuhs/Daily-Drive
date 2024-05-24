@@ -11,6 +11,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -22,16 +24,20 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.goalstracker.R
 import com.example.goalstracker.presentation.components.Graph
 import com.example.goalstracker.presentation.components.TextDesign
-import com.example.goalstracker.ui.theme.GoalsTrackerTheme
 
 @Composable
-fun ProfileScreen() {
+fun ProfileScreen(profileViewModel: ProfileViewModel = hiltViewModel()) {
     var text by rememberSaveable { mutableStateOf("Mohan") }
+    LaunchedEffect(key1 = true) {
+        profileViewModel.getWeeklyRepo()
+    }
+    val weekly by profileViewModel.weekly.collectAsState()
+
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -59,9 +65,11 @@ fun ProfileScreen() {
                     top = 10.dp
                 ), horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Box(modifier= Modifier
-                .fillMaxWidth(.8f)
-                .padding(5.dp), contentAlignment = Alignment.TopStart){
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth(.8f)
+                    .padding(5.dp), contentAlignment = Alignment.TopStart
+            ) {
                 TextDesign(txt = "Name : -", fw = FontWeight.SemiBold)
             }
             OutlinedTextField(
@@ -85,26 +93,17 @@ fun ProfileScreen() {
                     focusedLabelColor = Color.Gray
                 )
             )
-            Graph(map = listOf(
-                "M" to 1f,
-                "T" to .2f,
-                "W" to .8f,
-                "T" to .3f,
-                "F" to .9f,
-                "S" to .5f,
-                "S" to .9f
-            ), ht = 150)
-
-
-
+            Graph(
+                map = listOf(
+                    "M" to weekly.monday,
+                    "T" to weekly.tuesday,
+                    "W" to weekly.wednesday,
+                    "T" to weekly.thursday,
+                    "F" to weekly.friday,
+                    "S" to weekly.saturday,
+                    "S" to weekly.sunday
+                ), ht = 150
+            )
         }
-    }
-}
-
-@Preview(showSystemUi = true)
-@Composable
-private fun ProfileViewer() {
-    GoalsTrackerTheme {
-        ProfileScreen()
     }
 }

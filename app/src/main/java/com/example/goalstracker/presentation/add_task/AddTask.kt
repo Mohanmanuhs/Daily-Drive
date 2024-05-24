@@ -27,7 +27,6 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
@@ -52,16 +51,15 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.goalstracker.AndroidNotificationScheduler
 import com.example.goalstracker.R
+import com.example.goalstracker.SharedPref
 import com.example.goalstracker.data.Notification
 import com.example.goalstracker.data.Task
 import com.example.goalstracker.presentation.components.TextDesign
-import com.example.goalstracker.ui.theme.GoalsTrackerTheme
 import java.time.LocalTime
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
@@ -70,6 +68,7 @@ import java.time.LocalTime
 fun AddTaskScreen(addTaskViewModel: AddTaskViewModel= hiltViewModel()) {
     var openDialog by remember { mutableStateOf(false) }
     val context = LocalContext.current
+    val sharedPref = SharedPref(context)
     if (openDialog) {
         AlertDialog(
             onDismissRequest = { openDialog = false },
@@ -188,13 +187,7 @@ fun AddTaskScreen(addTaskViewModel: AddTaskViewModel= hiltViewModel()) {
                         if (!isGranted)
                             permissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
                     },
-                    enabled = true, colors = CheckboxDefaults.colors(
-                        uncheckedColor = Color.LightGray,
-                        checkedColor = Color.Black,
-                        disabledCheckedColor = Color.LightGray,
-                        disabledUncheckedColor = Color.LightGray,
-                        disabledIndeterminateColor = Color.LightGray
-                    )
+                    enabled = true
                 )
                 TextDesign(
                     txt = "do you want to set deadline for task?",
@@ -232,22 +225,29 @@ fun AddTaskScreen(addTaskViewModel: AddTaskViewModel= hiltViewModel()) {
                                 Toast.LENGTH_SHORT
                             ).show()
                         } else {
+                            addTaskViewModel.addTask(
+                                Task(
+                                    tName = text,
+                                    a = true,
+                                    aHour = if(state.hour==0) 12 else if(state.hour>12) state.hour-12 else state.hour,
+                                    aMinute = state.minute,
+                                    if(state.hour<12) 1 else 0
+                                )
+                            )
+                            sharedPref.incrementTotal()
                             notificationScheduler.schedule(
                                 notification = Notification(
                                     title = "Food is ready",
                                     description = "A courier is coming to you"
-                                ), hr = state.hour.toLong() - localTime.hour.toLong(),
+                                ), tName = text, hr = state.hour.toLong() - localTime.hour.toLong(),
                                 min = state.minute.toLong() - localTime.minute.toLong()
                             )
                         }
-                        addTaskViewModel.addTask(Task(
-                            tName=text,a=true,aHour=state.hour,aMinute=state.minute
-                        ))
-
                     }else{
                         addTaskViewModel.addTask(Task(
                             tName = text
                         ))
+                        sharedPref.incrementTotal()
                     }
                 },
                 modifier = Modifier
@@ -266,16 +266,6 @@ fun AddTaskScreen(addTaskViewModel: AddTaskViewModel= hiltViewModel()) {
                     color = Color.White
                 )
             }
-
         }
-    }
-}
-
-@RequiresApi(Build.VERSION_CODES.TIRAMISU)
-@Preview(showSystemUi = true)
-@Composable
-private fun AddTaskPreview() {
-    GoalsTrackerTheme {
-        AddTaskScreen()
     }
 }

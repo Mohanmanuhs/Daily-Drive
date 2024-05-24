@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.example.goalstracker.data.TaskDao
 import com.example.goalstracker.data.TaskRoomDatabase
+import com.example.goalstracker.data.WeeklyDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,6 +20,11 @@ object DatabaseModule {
     @Provides
     fun provideTaskDao(appDb:TaskRoomDatabase):TaskDao{
         return appDb.taskDao()
+    }
+
+    @Provides
+    fun provideWeeklyDao(appDb:TaskRoomDatabase):WeeklyDao{
+        return appDb.weeklyDao()
     }
 
     @Provides
