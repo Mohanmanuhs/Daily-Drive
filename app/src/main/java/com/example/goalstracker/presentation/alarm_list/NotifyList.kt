@@ -1,7 +1,6 @@
 package com.example.goalstracker.presentation.alarm_list
 
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,6 +14,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.NotificationsActive
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -22,16 +22,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.goalstracker.R
-import com.example.goalstracker.presentation.components.TextDesign
+import com.example.goalstracker.presentation.components.DownsideCurveCutBackground
 import com.example.goalstracker.ui.theme.GoalsTrackerTheme
+import com.example.goalstracker.ui.theme.rowBgColor
 
 @Composable
 fun NotifyList(notifyViewModel: NotifyViewModel = hiltViewModel()) {
@@ -40,29 +38,24 @@ fun NotifyList(notifyViewModel: NotifyViewModel = hiltViewModel()) {
         modifier = Modifier.fillMaxWidth()
     ) {
         Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-            Image(
-                imageVector = ImageVector.vectorResource(id = R.drawable.vector_2),
-                contentScale = ContentScale.Crop,
-                contentDescription = ""
-            )
-
+            DownsideCurveCutBackground()
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                TextDesign(
-                    txt = "Upcoming",
-                    fs = 40,
-                    fw = FontWeight.SemiBold,
+                Text(
+                    text = "Upcoming",
+                    fontSize = 40.sp,
+                    fontWeight = FontWeight.SemiBold,
                     color = Color.White
                 )
-                TextDesign(
-                    txt = "Notifications",
-                    fs = 40,
-                    fw = FontWeight.SemiBold,
+                Text(
+                    text = "Notifications",
+                    fontSize = 40.sp,
+                    fontWeight = FontWeight.SemiBold,
                     color = Color.White
                 )
-                TextDesign(
-                    txt = "List",
-                    fs = 40,
-                    fw = FontWeight.SemiBold,
+                Text(
+                    text = "List",
+                    fontSize = 40.sp,
+                    fontWeight = FontWeight.SemiBold,
                     color = Color.White
                 )
             }
@@ -74,13 +67,13 @@ fun NotifyList(notifyViewModel: NotifyViewModel = hiltViewModel()) {
                     top = 10.dp
                 ), horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            items(list.filter { it.a }, key = { it.pos }) {task->
+            items(list.filter { it.a }, key = { it.pos }) { task ->
                 Box(
                     modifier = Modifier
                         .animateItem(tween(1000))
                         .padding(bottom = 10.dp)
                         .clip(shape = RoundedCornerShape(18.dp))
-                        .background(color = Color(0xFFD9D9D9))
+                        .background(rowBgColor)
                         .fillMaxWidth(0.85f), contentAlignment = Alignment.Center
                 ) {
                     Row(
@@ -90,11 +83,11 @@ fun NotifyList(notifyViewModel: NotifyViewModel = hiltViewModel()) {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Icon(
-                            modifier=Modifier.padding(start = 15.dp, end = 15.dp),
+                            modifier = Modifier.padding(start = 15.dp, end = 15.dp),
                             imageVector = Icons.Filled.NotificationsActive,
                             contentDescription = "Notifications"
                         )
-                        TextDesign(txt = task.tName, fw = FontWeight.Normal, fs = 20)
+                        Text(text = task.tName, fontWeight = FontWeight.Normal, fontSize = 20.sp)
                         Box(
                             modifier = Modifier
                                 .padding(end = 15.dp)
@@ -103,7 +96,11 @@ fun NotifyList(notifyViewModel: NotifyViewModel = hiltViewModel()) {
                                 .height(70.dp),
                             contentAlignment = Alignment.CenterEnd
                         ) {
-                            TextDesign(txt = "${task.aHour}:${task.aMinute} ${if(task.aAm==1) "AM" else "PM"}", fw = FontWeight.Normal, fs = 20)
+                            Text(
+                                text = "${task.aHour}:${task.aMinute} ${if (task.aAm == 1) "AM" else "PM"}",
+                                fontWeight = FontWeight.Normal,
+                                fontSize = 20.sp
+                            )
                         }
                     }
 

@@ -1,8 +1,9 @@
-package com.example.goalstracker
+package com.example.goalstracker.notify
 
 import android.app.NotificationManager
 import android.content.Context
 import androidx.core.app.NotificationCompat
+import com.example.goalstracker.R
 import kotlin.random.Random
 
 class AppNotificationManager(
@@ -14,8 +15,8 @@ class AppNotificationManager(
         title: String,
         description: String
     ) {
-        val notification = NotificationCompat.Builder(context, "food_notification")
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
+        val notification = NotificationCompat.Builder(context, "task_notification")
+            .setSmallIcon(R.drawable.app_logo)
             .setContentTitle(title)
             .setContentText(description)
             .setPriority(NotificationCompat.PRIORITY_HIGH)

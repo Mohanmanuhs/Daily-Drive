@@ -1,9 +1,9 @@
 package com.example.goalstracker.navigation
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.AlarmOn
+import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.NotificationAdd
 import androidx.compose.material.icons.filled.Person
 
 object NavBarItems {
@@ -15,12 +15,12 @@ object NavBarItems {
         ),
         NavBarItem(
             title = "Add",
-            image = Icons.Filled.Add,
+            image = Icons.Filled.AddCircle,
             route = NavRoutes.AddTask
         ),
         NavBarItem(
-            title = "Alarms",
-            image = Icons.Filled.AlarmOn,
+            title = "Notify",
+            image = Icons.Filled.NotificationAdd,
             route = NavRoutes.Alarm
         ),
         NavBarItem(

@@ -44,14 +44,15 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.goalstracker.AndroidNotificationScheduler
-import com.example.goalstracker.SharedPref
-import com.example.goalstracker.data.Weekly
+import com.example.goalstracker.pref.SharedPref
+import com.example.goalstracker.ui.theme.rowBgColor
 import kotlinx.coroutines.delay
 import java.time.LocalDate
 import java.util.concurrent.TimeUnit
@@ -63,26 +64,18 @@ fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
 
     val context = LocalContext.current
     val sharedPrefs = SharedPref(context)
-    val androidNotificationScheduler =AndroidNotificationScheduler(context)
     val dialogShownToday = remember { mutableStateOf(false) }
     val todayDateString = LocalDate.now().toString()
     val dialogShownTodayPref = sharedPrefs.getTodayBoolean(todayDateString)
     val completed = sharedPrefs.getCompleted().toFloat()
     val total = sharedPrefs.getTotal().toFloat()
-    homeViewModel.updateWeekly(if(completed==0f) 0f else completed / total)
+    homeViewModel.updateWeekly(if (completed == 0f) 0f else completed / total)
 
     LaunchedEffect(key1 = Unit) {
-        if (sharedPrefs.isFirstTime) {
-            sharedPrefs.isFirstTime()
-            homeViewModel.addWeekly(Weekly())
-            androidNotificationScheduler.setSundayEndAlarm()
+        if (!dialogShownTodayPref && !dialogShownToday.value) {
+            delay(TimeUnit.SECONDS.toMillis(1))
+            dialogShownToday.value = true
             sharedPrefs.putTodayBoolean(todayDateString)
-        } else {
-            if (!dialogShownTodayPref && !dialogShownToday.value) {
-                delay(TimeUnit.SECONDS.toMillis(1))
-                dialogShownToday.value = true
-                sharedPrefs.putTodayBoolean(todayDateString)
-            }
         }
     }
 
@@ -220,7 +213,7 @@ fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
                         .animateItem(tween(1000))
                         .padding(bottom = 10.dp)
                         .clip(shape = RoundedCornerShape(18.dp))
-                        .background(color = Color(0xFFD9D9D9))
+                        .background(rowBgColor)
                         .pointerInput(true) {
                             detectTapGestures(onLongPress = { offset ->
                                 taskClickPosition =
@@ -253,7 +246,20 @@ fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
                             },
                             enabled = true
                         )
-                        Text(text = task.tName, fontWeight = FontWeight.Normal, fontSize = 20.sp)
+                        if (task.tc) {
+                            Text(
+                                text = task.tName,
+                                fontWeight = FontWeight.Normal,
+                                fontSize = 20.sp, color = Color.Gray,
+                                style = TextStyle(textDecoration = TextDecoration.LineThrough)
+                            )
+                        } else {
+                            Text(
+                                text = task.tName,
+                                fontWeight = FontWeight.Normal,
+                                fontSize = 20.sp
+                            )
+                        }
                         if (task.pTask) {
                             Icon(
                                 modifier = Modifier
@@ -291,7 +297,6 @@ fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
         }
     }
 }
-
 
 
 @Composable

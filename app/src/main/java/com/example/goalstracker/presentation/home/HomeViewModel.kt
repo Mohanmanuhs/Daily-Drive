@@ -2,7 +2,6 @@ package com.example.goalstracker.presentation.home
 
 import androidx.lifecycle.ViewModel
 import com.example.goalstracker.data.TaskRepository
-import com.example.goalstracker.data.Weekly
 import com.example.goalstracker.data.WeeklyRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
@@ -34,10 +33,6 @@ class HomeViewModel @Inject constructor(
     
     fun deleteAllTask() {
         taskRepository.deleteAllTask()
-    }
-
-    fun addWeekly(weekly: Weekly) {
-        weeklyRepository.addWeekly(weekly)
     }
 
     fun taskNotCompleted(taskPosition: Int) {

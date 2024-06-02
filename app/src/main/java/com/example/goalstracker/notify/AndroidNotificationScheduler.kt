@@ -1,4 +1,4 @@
-package com.example.goalstracker
+package com.example.goalstracker.notify
 
 import android.app.AlarmManager
 import android.app.PendingIntent
@@ -11,7 +11,7 @@ import java.util.Calendar
 import kotlin.random.Random
 
 
-class AndroidNotificationScheduler(private val context: Context):NotificationScheduler {
+class AndroidNotificationScheduler(private val context: Context): NotificationScheduler {
     private val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     
     override fun schedule(notification: Notification,tName:String, hr:Long, min:Long) {
@@ -21,7 +21,7 @@ class AndroidNotificationScheduler(private val context: Context):NotificationSch
                 putExtra("DESCRIPTION", notification.description)
                 putExtra("tName",tName)
             }
-        intent.action=NotificationReceiver.ACTION_NOTIFICATION
+        intent.action= NotificationReceiver.ACTION_NOTIFICATION
         alarmManager.setExactAndAllowWhileIdle(
             AlarmManager.RTC_WAKEUP,
             LocalDateTime.now()

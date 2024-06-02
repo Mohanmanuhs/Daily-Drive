@@ -12,8 +12,8 @@ class MyApplication:Application() {
         super.onCreate()
 
         val channel = NotificationChannel(
-            "food_notification", // ID
-            "Food", // Name
+            "task_notification", // ID
+            "Tasks", // Name
             NotificationManager.IMPORTANCE_HIGH // Importance
         )
         // Creates the channel

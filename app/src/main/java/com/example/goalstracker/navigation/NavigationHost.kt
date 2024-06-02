@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.goalstracker.Scaffold
+import com.example.goalstracker.presentation.sign_up.WelcomeScreen
 import com.example.goalstracker.presentation.splash.SplashScreen
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
@@ -20,6 +20,12 @@ fun NavigationHost(navController: NavHostController) {
         composable<NavRoutes.Splash>
         {
             SplashScreen(navController = navController)
+
+        }
+        composable<NavRoutes.SignUp>
+        {
+            WelcomeScreen(navController = navController)
+
         }
         composable<NavRoutes.Scafold> {
             Scaffold()

@@ -6,10 +6,7 @@ import android.net.Uri
 import android.os.Build
 import android.provider.Settings
 import android.widget.Toast
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,7 +27,6 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -46,26 +42,23 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.goalstracker.AndroidNotificationScheduler
-import com.example.goalstracker.R
-import com.example.goalstracker.SharedPref
 import com.example.goalstracker.data.Notification
 import com.example.goalstracker.data.Task
-import com.example.goalstracker.presentation.components.TextDesign
+import com.example.goalstracker.notify.AndroidNotificationScheduler
+import com.example.goalstracker.pref.SharedPref
+import com.example.goalstracker.presentation.components.DownsideCurveCutBackground
 import java.time.LocalTime
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddTaskScreen(addTaskViewModel: AddTaskViewModel= hiltViewModel()) {
+fun AddTaskScreen(addTaskViewModel: AddTaskViewModel = hiltViewModel()) {
     var openDialog by remember { mutableStateOf(false) }
     val context = LocalContext.current
     val sharedPref = SharedPref(context)
@@ -115,33 +108,23 @@ fun AddTaskScreen(addTaskViewModel: AddTaskViewModel= hiltViewModel()) {
     val notificationScheduler = remember {
         AndroidNotificationScheduler(context)
     }
-    val permissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission(),
-        onResult = {
-
-        }
-    )
-    val isGranted = ContextCompat.checkSelfPermission(
-        context,
-        android.Manifest.permission.POST_NOTIFICATIONS
-    ) == PackageManager.PERMISSION_GRANTED
-
+    val isGranted by remember{
+        mutableStateOf(ContextCompat.checkSelfPermission(
+            context,
+            android.Manifest.permission.POST_NOTIFICATIONS
+        ) == PackageManager.PERMISSION_GRANTED)
+    }
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
         Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-            Image(
-                imageVector = ImageVector.vectorResource(id = R.drawable.vector_2),
-                contentScale = ContentScale.Crop,
-                contentDescription = ""
-            )
-
+            DownsideCurveCutBackground()
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                TextDesign(
-                    txt = "Add new task",
-                    fs = 40,
-                    fw = FontWeight.SemiBold,
-                    color = Color.White
+                Text(
+                    text = "Add new task",
+                    color = Color.White,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 40.sp,
                 )
             }
         }
@@ -159,20 +142,13 @@ fun AddTaskScreen(addTaskViewModel: AddTaskViewModel= hiltViewModel()) {
                     .padding(bottom = 20.dp),
                 onValueChange = { text = it }, shape = RoundedCornerShape(15.dp),
                 placeholder = {
-                    TextDesign(
-                        txt = "Enter task name",
+                    Text(
+                        text = "Enter task name",
                         modifier = Modifier.padding(start = 5.dp),
-                        fw = FontWeight.Light,
+                        fontWeight = FontWeight.Light,
                         color = Color(0xFF929292)
                     )
-                },
-                colors = OutlinedTextFieldDefaults.colors(
-                    unfocusedContainerColor = Color(0xFFF3F1F1),
-                    focusedContainerColor = Color(0xFFF3F1F1),
-                    unfocusedBorderColor = Color.Blue,
-                    unfocusedLabelColor = Color.Gray,
-                    focusedLabelColor = Color.Gray
-                )
+                }
             )
 
             Row(
@@ -184,15 +160,13 @@ fun AddTaskScreen(addTaskViewModel: AddTaskViewModel= hiltViewModel()) {
                     checked = showTimePicker,
                     onCheckedChange = {
                         showTimePicker = it
-                        if (!isGranted)
-                            permissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
                     },
                     enabled = true
                 )
-                TextDesign(
-                    txt = "do you want to set deadline for task?",
-                    fs = 15,
-                    fw = FontWeight.Medium
+                Text(
+                    text = "do you want to set remainder for task?",
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Medium
                 )
             }
 
@@ -211,15 +185,11 @@ fun AddTaskScreen(addTaskViewModel: AddTaskViewModel= hiltViewModel()) {
             }
             Button(
                 onClick = {
+
                     if (!isGranted)
-                        openDialog=true
-                    else if (showTimePicker){
-                        if (state.hour < localTime.hour) {
-                            Toast.makeText(
-                                context, "Please select time greater than present time",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }else if(state.hour==localTime.hour && state.minute<=localTime.minute){
+                        openDialog = true
+                    else if (showTimePicker) {
+                        if (state.hour < localTime.hour || (state.hour == localTime.hour && state.minute <= localTime.minute)) {
                             Toast.makeText(
                                 context, "Please select time greater than present time",
                                 Toast.LENGTH_SHORT
@@ -229,24 +199,26 @@ fun AddTaskScreen(addTaskViewModel: AddTaskViewModel= hiltViewModel()) {
                                 Task(
                                     tName = text,
                                     a = true,
-                                    aHour = if(state.hour==0) 12 else if(state.hour>12) state.hour-12 else state.hour,
+                                    aHour = if (state.hour == 0) 12 else if (state.hour > 12) state.hour - 12 else state.hour,
                                     aMinute = state.minute,
-                                    if(state.hour<12) 1 else 0
+                                    if (state.hour < 12) 1 else 0
                                 )
                             )
                             sharedPref.incrementTotal()
                             notificationScheduler.schedule(
                                 notification = Notification(
-                                    title = "Food is ready",
-                                    description = "A courier is coming to you"
+                                    title = "Task Remainder",
+                                    description = "$text task is remaining please complete it"
                                 ), tName = text, hr = state.hour.toLong() - localTime.hour.toLong(),
                                 min = state.minute.toLong() - localTime.minute.toLong()
                             )
                         }
-                    }else{
-                        addTaskViewModel.addTask(Task(
-                            tName = text
-                        ))
+                    } else {
+                        addTaskViewModel.addTask(
+                            Task(
+                                tName = text
+                            )
+                        )
                         sharedPref.incrementTotal()
                     }
                 },
@@ -259,13 +231,14 @@ fun AddTaskScreen(addTaskViewModel: AddTaskViewModel= hiltViewModel()) {
                     containerColor = Color(0xFFFA5D5D)
                 )
             ) {
-                TextDesign(
-                    txt = "save",
-                    fs = 20,
-                    fw = FontWeight.Bold,
+                Text(
+                    text = "save",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
                     color = Color.White
                 )
             }
         }
     }
+
 }

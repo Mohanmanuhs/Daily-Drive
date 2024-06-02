@@ -1,7 +1,7 @@
 package com.example.goalstracker.di
 
 import android.content.Context
-import com.example.goalstracker.AppNotificationManager
+import com.example.goalstracker.notify.AppNotificationManager
 import com.example.goalstracker.data.TaskDao
 import com.example.goalstracker.data.TaskRepository
 import com.example.goalstracker.data.WeeklyDao

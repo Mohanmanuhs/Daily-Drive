@@ -1,4 +1,4 @@
-package com.example.goalstracker
+package com.example.goalstracker.pref
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -8,9 +8,12 @@ class SharedPref(context: Context) {
         context.getSharedPreferences("myPref", Context.MODE_PRIVATE)
 
     val isFirstTime = sharedPreferences.getBoolean("isFirstTime", true)
-
+    val welcome = sharedPreferences.getBoolean("welcome", true)
     private val editor: SharedPreferences.Editor = sharedPreferences.edit()
 
+    fun wel() {
+        editor.putBoolean("welcome", false).apply()
+    }
     fun getTotal(): Int {
         return sharedPreferences.getInt("total",0)
     }

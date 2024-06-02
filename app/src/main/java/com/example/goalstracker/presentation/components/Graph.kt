@@ -14,8 +14,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -26,11 +29,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.goalstracker.R
+import androidx.compose.ui.unit.sp
+import com.example.goalstracker.ui.theme.weekTxtColor
+import kotlinx.coroutines.delay
 
 @Composable
 fun Graph(map: List<Pair<String, Float>>, ht: Int) {
@@ -38,7 +42,7 @@ fun Graph(map: List<Pair<String, Float>>, ht: Int) {
         modifier = Modifier
             .padding(5.dp)
             .fillMaxWidth(.8f)
-            .height((ht + 160).dp), elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
+            .height((ht + 150).dp), elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
     ) {
 
         Box(
@@ -49,21 +53,14 @@ fun Graph(map: List<Pair<String, Float>>, ht: Int) {
         ) {
             Column(
                 modifier = Modifier
-                    .padding(top = 10.dp)
+                    .padding(top = 15.dp)
                     .align(Alignment.TopCenter),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                TextDesign(
-                    txt = "Weekly Overview",
-                    fs = 20,
-                    fw = FontWeight.SemiBold,
-                    color = Color.Black
-                )
-                TextDesign(
-                    txt = "Apr 10 - Apr 17",
-                    fs = 15,
-                    fw = FontWeight.Normal,
-                    color = Color.Black
+                Text(
+                    text = "Weekly Overview",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.SemiBold
                 )
             }
             Row(
@@ -87,11 +84,11 @@ fun Graph(map: List<Pair<String, Float>>, ht: Int) {
                         val graphHeight by animateFloatAsState(
                             targetValue = if (animationTriggered) it.second else 0f,
                             animationSpec = tween(
-                                durationMillis = 1000,
-                                delayMillis = 50
+                                durationMillis = 600
                             ), label = "anime"
                         )
-                        LaunchedEffect(key1 = true) {
+                        LaunchedEffect(key1 = Unit) {
+                            delay(100)
                             animationTriggered = true
                         }
                         Box(
@@ -108,19 +105,19 @@ fun Graph(map: List<Pair<String, Float>>, ht: Int) {
                             Box(modifier = Modifier.padding(top = 4.dp)) {
                                 if (graphHeight == 1f) {
                                     Image(
-                                        imageVector = ImageVector.vectorResource(id = R.drawable.baseline_star_24),
-                                        contentDescription = ""
+                                        imageVector = Icons.Filled.Star,
+                                        contentDescription = "",
+                                        colorFilter = ColorFilter.tint(Color.Yellow)
                                     )
                                 }
                             }
                         }
-                        TextDesign(
+                        Text(
                             modifier = Modifier.padding(top = 2.dp),
-                            txt = it.first,
-                            fw = FontWeight.SemiBold,
-                            color = Color.Gray
+                            text = it.first,
+                            fontWeight = FontWeight.SemiBold,
+                            color = weekTxtColor
                         )
-
                     }
                 }
             }
@@ -130,21 +127,19 @@ fun Graph(map: List<Pair<String, Float>>, ht: Int) {
                     .align(Alignment.BottomCenter),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                TextDesign(
-                    txt = "You are doing good!",
-                    fw = FontWeight.SemiBold,
-                    color = Color.Gray
+                Text(
+                    text = "You are doing good!",
+                    fontWeight = FontWeight.SemiBold,
+                    color = weekTxtColor
                 )
-                TextDesign(
+                Text(
                     modifier = Modifier,
-                    txt = "keep it up",
-                    fs = 15,
-                    fw = FontWeight.Normal,
-                    color = Color.Gray
+                    text = "keep it up",
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Normal,
+                    color = weekTxtColor
                 )
             }
-
-
         }
     }
 

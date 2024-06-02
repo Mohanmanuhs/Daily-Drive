@@ -1,4 +1,4 @@
-package com.example.goalstracker
+package com.example.goalstracker.navigation
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -10,49 +10,51 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.goalstracker.navigation.NavBarItems
-import com.example.goalstracker.navigation.NavRoutes
 import com.example.goalstracker.presentation.add_task.AddTaskScreen
 import com.example.goalstracker.presentation.alarm_list.NotifyList
 import com.example.goalstracker.presentation.home.HomeScreen
 import com.example.goalstracker.presentation.profile.ProfileScreen
+import com.example.goalstracker.ui.theme.txtColor
 
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun Scaffold() {
     val navController1 = rememberNavController()
-    val backStackEntry by navController1.currentBackStackEntryAsState()
-    val currentDestination  = backStackEntry?.destination
+    var selected:NavRoutes by remember{
+        mutableStateOf(NavRoutes.Home)
+    }
     Scaffold(
         bottomBar = {
             NavigationBar {
                 NavBarItems.BarItems.forEach { navBarItem ->
-                    val selected = currentDestination == navBarItem.route
                     NavigationBarItem(
-                        selected = selected,
+                        selected = selected==navBarItem.route,
                         onClick = {
-                            if (currentDestination != navBarItem.route) {
+                            if (selected != navBarItem.route) {
+                                selected=navBarItem.route
                                 navController1.navigate(navBarItem.route) {
-                                    popUpTo(navController1.graph.findStartDestination().id){
-                                        saveState=true
-                                    }
+                                    popUpTo(0)
                                     launchSingleTop = true
                                 }
                             }
-                        },
+                        }, alwaysShowLabel = false,
                         icon = {
                             Icon(
                                 imageVector = navBarItem.image,
-                                contentDescription = navBarItem.title
+                                contentDescription = navBarItem.title,
+                                tint = if(selected==navBarItem.route) txtColor else Color.Gray
                             )
-                        }, label = { Text(text = navBarItem.title) }
+                        },
+                        label = { Text(text = navBarItem.title, color = txtColor)}
                     )
                 }
             }

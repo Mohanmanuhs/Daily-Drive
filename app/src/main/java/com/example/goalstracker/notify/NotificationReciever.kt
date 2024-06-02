@@ -1,4 +1,4 @@
-package com.example.goalstracker
+package com.example.goalstracker.notify
 
 import android.content.BroadcastReceiver
 import android.content.Context
